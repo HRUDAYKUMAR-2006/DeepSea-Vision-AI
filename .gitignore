@@ -1,0 +1,26 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Local databases & uploads (keep directory structures, ignore runtime generated db files)
+storage/*.db
+storage/uploads/*
+storage/enhanced/*
+!storage/uploads/.gitkeep
+!storage/enhanced/.gitkeep
+
+# Output artifacts
+outputs/*
+!outputs/.gitkeep
+
+# Environment & IDE
+.vscode/
+.idea/
+.env
+venv/
+env/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,297 @@
+[
+  {
+    "id": "sample_1_shallow_reef",
+    "description": "Shallow photic reef (25m depth, 3.48 atm). Moderate red attenuation.",
+    "camera_depth_m": 25.0,
+    "clean_image_path": "datasets/sample_images\\sample_1_shallow_reef_clean.png",
+    "degraded_image_path": "datasets/sample_images\\sample_1_shallow_reef_degraded.png",
+    "ground_truth_boxes": [
+      {
+        "box": [
+          176,
+          161,
+          333,
+          241
+        ],
+        "class_name": "fish"
+      },
+      {
+        "box": [
+          391,
+          107,
+          490,
+          161
+        ],
+        "class_name": "fish"
+      }
+    ],
+    "telemetry": {
+      "camera_model": "DeepExplorer-Pro-500M",
+      "depth_meters": 25.0,
+      "pressure": {
+        "depth_m": 25.0,
+        "hydrostatic_pressure_atm": 2.4800928324697753,
+        "total_pressure_atm": 3.4800928324697753,
+        "total_pressure_kpa": 352.62040625,
+        "safety_status": "SAFE",
+        "is_valid_operating_zone": true,
+        "warning": null
+      },
+      "optics_light": {
+        "depth_m": 25.0,
+        "zone": "Euphotic (Sunlight Zone)",
+        "lighting_type": "Natural Solar Downwelling",
+        "ambient_lux": 32465.246735834975,
+        "transmission_rgb": {
+          "red": 0.00015846132511575126,
+          "green": 0.1353352832366127,
+          "blue": 0.2865047968601901
+        },
+        "red_loss_percent": 99.98415386748843,
+        "color_cast_tendency": "Blue-Green"
+      },
+      "operational_valid": true
+    },
+    "background_light_gt": [
+      0.0820000022649765,
+      0.35749998688697815,
+      0.5590000152587891
+    ]
+  },
+  {
+    "id": "sample_2_turtle_pelagic",
+    "description": "Mid-photic pelagic zone (120m depth, 12.90 atm). Pronounced blue-green cast.",
+    "camera_depth_m": 120.0,
+    "clean_image_path": "datasets/sample_images\\sample_2_turtle_pelagic_clean.png",
+    "degraded_image_path": "datasets/sample_images\\sample_2_turtle_pelagic_degraded.png",
+    "ground_truth_boxes": [
+      {
+        "box": [
+          212,
+          121,
+          432,
+          306
+        ],
+        "class_name": "turtle"
+      },
+      {
+        "box": [
+          116,
+          378,
+          204,
+          466
+        ],
+        "class_name": "echinoderm"
+      }
+    ],
+    "telemetry": {
+      "camera_model": "DeepExplorer-Pro-500M",
+      "depth_meters": 120.0,
+      "pressure": {
+        "depth_m": 120.0,
+        "hydrostatic_pressure_atm": 11.904445595854922,
+        "total_pressure_atm": 12.904445595854922,
+        "total_pressure_kpa": 1307.54295,
+        "safety_status": "SAFE",
+        "is_valid_operating_zone": true,
+        "warning": null
+      },
+      "optics_light": {
+        "depth_m": 120.0,
+        "zone": "Euphotic (Sunlight Zone)",
+        "lighting_type": "Natural Solar Downwelling",
+        "ambient_lux": 451.658094261267,
+        "transmission_rgb": {
+          "red": 2.510999155743982e-08,
+          "green": 6.77287364908539e-05,
+          "blue": 0.0024787521766663585
+        },
+        "red_loss_percent": 100.0,
+        "color_cast_tendency": "Blue-Green"
+      },
+      "operational_valid": true
+    },
+    "background_light_gt": [
+      0.08959999680519104,
+      0.38600000739097595,
+      0.5932000279426575
+    ]
+  },
+  {
+    "id": "sample_3_twilight_crustacean",
+    "description": "Mesopelagic twilight zone (280m depth, 28.77 atm). Low ambient light & turbidity.",
+    "camera_depth_m": 280.0,
+    "clean_image_path": "datasets/sample_images\\sample_3_twilight_crustacean_clean.png",
+    "degraded_image_path": "datasets/sample_images\\sample_3_twilight_crustacean_degraded.png",
+    "ground_truth_boxes": [
+      {
+        "box": [
+          247,
+          351,
+          417,
+          450
+        ],
+        "class_name": "crustacean"
+      },
+      {
+        "box": [
+          131,
+          138,
+          294,
+          198
+        ],
+        "class_name": "fish"
+      }
+    ],
+    "telemetry": {
+      "camera_model": "DeepExplorer-Pro-500M",
+      "depth_meters": 280.0,
+      "pressure": {
+        "depth_m": 280.0,
+        "hydrostatic_pressure_atm": 27.777039723661485,
+        "total_pressure_atm": 28.777039723661485,
+        "total_pressure_kpa": 2915.83355,
+        "safety_status": "SAFE",
+        "is_valid_operating_zone": true,
+        "warning": null
+      },
+      "optics_light": {
+        "depth_m": 280.0,
+        "zone": "Mesopelagic (Twilight Zone)",
+        "lighting_type": "Low Ambient + ROV Floodlights",
+        "ambient_lux": 0.33720152341391846,
+        "transmission_rgb": {
+          "red": 2.510999155743982e-08,
+          "green": 1.1253517471925912e-07,
+          "blue": 8.315287191035679e-07
+        },
+        "red_loss_percent": 100.0,
+        "color_cast_tendency": "Deep Oceanic Blue / Backscatter"
+      },
+      "operational_valid": true
+    },
+    "background_light_gt": [
+      0.10239999741315842,
+      0.4339999854564667,
+      0.6507999897003174
+    ]
+  },
+  {
+    "id": "sample_4_deep_500m_survey",
+    "description": "Rated 500m deep-sea limit (500m depth, 50.60 atm). Approaching maximum housing pressure.",
+    "camera_depth_m": 500.0,
+    "clean_image_path": "datasets/sample_images\\sample_4_deep_500m_survey_clean.png",
+    "degraded_image_path": "datasets/sample_images\\sample_4_deep_500m_survey_degraded.png",
+    "ground_truth_boxes": [
+      {
+        "box": [
+          247,
+          351,
+          417,
+          450
+        ],
+        "class_name": "crustacean"
+      },
+      {
+        "box": [
+          131,
+          138,
+          294,
+          198
+        ],
+        "class_name": "fish"
+      }
+    ],
+    "telemetry": {
+      "camera_model": "DeepExplorer-Pro-500M",
+      "depth_meters": 500.0,
+      "pressure": {
+        "depth_m": 500.0,
+        "hydrostatic_pressure_atm": 49.60185664939551,
+        "total_pressure_atm": 50.60185664939551,
+        "total_pressure_kpa": 5127.233125,
+        "safety_status": "WARNING_HIGH_PRESSURE",
+        "is_valid_operating_zone": true,
+        "warning": "Pressure approaching maximum rated limit: 50.60 atm (>90% rated)."
+      },
+      "optics_light": {
+        "depth_m": 500.0,
+        "zone": "Mesopelagic (Twilight Zone)",
+        "lighting_type": "Low Ambient + ROV Floodlights",
+        "ambient_lux": 0.05,
+        "transmission_rgb": {
+          "red": 2.510999155743982e-08,
+          "green": 1.1253517471925912e-07,
+          "blue": 2.510999155743982e-08
+        },
+        "red_loss_percent": 100.0,
+        "color_cast_tendency": "Deep Oceanic Blue / Backscatter"
+      },
+      "operational_valid": true
+    },
+    "background_light_gt": [
+      0.11999999731779099,
+      0.5,
+      0.7300000190734863
+    ]
+  },
+  {
+    "id": "sample_5_overpressure_560m",
+    "description": "Overpressure threshold test (560m depth, 56.55 atm). Exceeds 500m rating and triggers safety alert.",
+    "camera_depth_m": 560.0,
+    "clean_image_path": "datasets/sample_images\\sample_5_overpressure_560m_clean.png",
+    "degraded_image_path": "datasets/sample_images\\sample_5_overpressure_560m_degraded.png",
+    "ground_truth_boxes": [
+      {
+        "box": [
+          212,
+          121,
+          432,
+          306
+        ],
+        "class_name": "turtle"
+      },
+      {
+        "box": [
+          116,
+          378,
+          204,
+          466
+        ],
+        "class_name": "echinoderm"
+      }
+    ],
+    "telemetry": {
+      "camera_model": "DeepExplorer-Pro-500M",
+      "depth_meters": 560.0,
+      "pressure": {
+        "depth_m": 560.0,
+        "hydrostatic_pressure_atm": 55.55407944732297,
+        "total_pressure_atm": 56.55407944732297,
+        "total_pressure_kpa": 5730.3421,
+        "safety_status": "OUT_OF_RANGE",
+        "is_valid_operating_zone": false,
+        "warning": "Depth 560.0m exceeds the camera's maximum depth rating [0.0m - 500.0m]."
+      },
+      "optics_light": {
+        "depth_m": 560.0,
+        "zone": "Bathypelagic / Aphotic (Midnight Zone)",
+        "lighting_type": "Complete Darkness (Artificial Illumination Required)",
+        "ambient_lux": 0.05,
+        "transmission_rgb": {
+          "red": 2.510999155743982e-08,
+          "green": 1.1253517471925912e-07,
+          "blue": 2.510999155743982e-08
+        },
+        "red_loss_percent": 100.0,
+        "color_cast_tendency": "Deep Oceanic Blue / Backscatter"
+      },
+      "operational_valid": false
+    },
+    "background_light_gt": [
+      0.11999999731779099,
+      0.5,
+      0.7300000190734863
+    ]
+  }
+]

@@ -1,0 +1,41 @@
+# Detection-Aware Deep Unfolding Network Configuration
+# Based directly on the Major Project Stage-I Presentation (GNI AI&DS)
+
+model:
+  name: "Detection-Aware Deep Unfolding Network"
+  num_unfolding_stages: 3  # K = 3 stages as detailed in Slide 12 & 13 (Stage 1: red restore, Stage 2: contrast/haze, Stage 3: edge sharpening)
+  
+  # Image Formation Model Parameters: I(x) = J(x)*t(x) + B*(1 - t(x))
+  physical_model:
+    t_min: 0.05
+    t_max: 0.95
+    background_light_init: [0.15, 0.45, 0.65] # Initial estimate for B [R, G, B] underwater
+  
+  # Deep Unfolding Gradient Step: Z_k = J_{k-1} - \rho_k * \nabla f(J_{k-1})
+  unfolding_step:
+    step_sizes_rho: [0.35, 0.25, 0.15]  # Learnable/adaptive step sizes \rho_k for each stage k
+    prox_channels: 32                   # Intermediate feature channels in ProxNet_k
+  
+  # Detector Configuration (e.g., Marine YOLO)
+  detector:
+    classes: ["fish", "turtle", "echinoderm", "crustacean"]
+    num_classes: 4
+    input_size: [640, 640]
+    conf_threshold: 0.25
+    nms_iou_threshold: 0.45
+    feature_channels: 64                # Channels for detector guidance feature F_det
+
+  # Joint End-to-End Training Loss Weights:
+  # L = L_rec + alpha * L_perc + beta * L_det + gamma * L_stage
+  loss_weights:
+    alpha: 0.2    # Weight for perceptual loss L_perc
+    beta: 0.5     # Weight for detection task loss L_det
+    gamma: 0.3    # Weight for multi-stage supervision loss L_stage
+    stage_weights: [0.2, 0.3, 0.5]  # Per-stage weighting for L_stage across k=1..K
+
+training:
+  learning_rate: 0.0002
+  batch_size: 4
+  epochs: 50
+  optimizer: "AdamW"
+  weight_decay: 0.0001

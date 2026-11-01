@@ -1,0 +1,41 @@
+# Camera and Underwater Environment Physical Constraints
+# Operational envelope: Extended Deep-Sea Rated up to 500+ meters depth & 55+ atm hydrostatic pressure
+
+camera:
+  model_name: "DeepExplorer-Pro-500M"
+  type: "Deep-Sea Optical Marine Imaging Sensor"
+  description: "Reinforced titanium housing optical camera rated for photic to mesopelagic depths (0m - 500m)"
+  
+  # Optical & Sensor Parameters
+  resolution: [640, 640]
+  fov_horizontal_deg: 80.0
+  color_channels: 3
+  exposure_time_ms: 25.0
+
+  # Depth & Light Region Boundaries (0m to 500m+)
+  light_region:
+    min_depth_meters: 0.0        # Sea level surface
+    max_depth_meters: 500.0      # Rated operating depth limit
+    critical_red_cutoff_depth_m: 5.0 # Depth at which red light is ~90% absorbed
+    euphotic_limit_depth_m: 200.0    # 0 - 200m: Sunlight zone
+    mesopelagic_limit_depth_m: 500.0 # 200m - 500m: Twilight zone (requires high sensitivity & floodlights)
+    surface_lux: 100000.0
+
+  # Underwater Atmospheric & Hydrostatic Pressure Limits
+  # Formula: P(d) = P_0 + (rho * g * d) / 101325  (atm)
+  # At 500m depth: P = 1.0 + (1025 * 9.80665 * 500) / 101325 ≈ 50.61 atm (≈ 5128 kPa)
+  pressure_limits:
+    surface_atmospheric_pressure_atm: 1.0   # 1.0 atm = 101.325 kPa at sea level
+    surface_pressure_kpa: 101.325
+    water_density_kg_per_m3: 1025.0         # Standard seawater density
+    gravity_m_per_s2: 9.80665
+    min_pressure_atm: 1.0
+    max_pressure_atm: 56.0                  # Housing rated up to 56.0 atm (safety factor ~1.10)
+    max_pressure_kpa: 5674.2
+    warning_threshold_ratio: 0.90           # Warn when exceeding 90% (P > 50.4 atm / ~498m)
+
+  # Attenuation Characteristics
+  attenuation_coefficients:
+    red: 0.350    # m^-1 (rapid extinction)
+    green: 0.080  # m^-1 (intermediate)
+    blue: 0.050   # m^-1 (deepest natural penetration)

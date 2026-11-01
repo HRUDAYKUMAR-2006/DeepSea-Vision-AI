@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSea Vision AI | Search Party & Deep-Sea Survey Platform</title>
+    <!-- PWA Manifest & Meta -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DeepSeaVision">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Marked.js for AI Report Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        .report-content h1 { font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-top: 1.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
+        .report-content h2 { font-size: 1.2rem; font-weight: 700; color: #0369a1; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+        .report-content h3 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-top: 1rem; margin-bottom: 0.35rem; }
+        .report-content p { color: #334155; line-height: 1.6; margin-bottom: 0.75rem; font-size: 0.875rem; }
+        .report-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; font-size: 0.875rem; color: #334155; }
+        .report-content table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; margin-bottom: 1rem; font-size: 0.825rem; }
+        .report-content th { background-color: #f1f5f9; color: #1e293b; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; font-weight: 600; text-align: left; }
+        .report-content td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; color: #334155; }
+        .report-content code { background-color: #f1f5f9; color: #0284c7; padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-size: 0.8rem; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-blue-500 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-sky-500/20">
+                    <i class="fa-solid fa-water"></i>
+                </div>
+                <div>
+                    <h1 class="text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                        <span>DeepSea Vision AI</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">500M Envelope</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium">Detection-Aware Deep Unfolding Platform for Joint Underwater Restoration & Search Party Operations</p>
+                </div>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Download / Install App Button -->
+                <button onclick="openDownloadModal()" class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg transition border border-emerald-300 flex items-center space-x-1.5 shadow-xs">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download App</span>
+                </button>
+
+                <!-- Database Logs Viewer Button -->
+                <button onclick="openHistoryModal()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition border border-slate-300 flex items-center space-x-1.5 shadow-xs">
+                    <i class="fa-solid fa-database text-sky-600"></i>
+                    <span>Evidence Logs</span>
+                </button>
+
+                <!-- AI Report Button -->
+                <button onclick="generateCurrentAIReport()" class="px-3.5 py-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-bold rounded-lg transition shadow-sm shadow-indigo-500/20 flex items-center space-x-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Generate AI Report</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Party Mission Context Bar -->
+    <div class="bg-gradient-to-r from-slate-100 via-sky-50/50 to-slate-100 border-b border-slate-200 py-2.5">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex flex-wrap items-center gap-4 text-slate-600">
+                <div class="flex items-center space-x-1.5">
+                    <i class="fa-solid fa-compass text-sky-600"></i>
+                    <span class="font-semibold text-slate-700">Mission:</span>
+                    <input type="text" id="missionCodeInput" value="SAR-OFFSHORE-01" class="bg-white border border-slate-300 rounded px-2 py-0.5 font-mono text-[11px] font-bold text-slate-800 w-36">
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <i class="fa-solid fa-location-dot text-red-500"></i>
+                    <span class="font-semibold text-slate-700">GPS:</span>
+                    <input type="text" id="gpsInput" value="17.3850 N, 78.4867 E" class="bg-white border border-slate-300 rounded px-2 py-0.5 font-mono text-[11px] text-slate-700 w-44">
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <i class="fa-solid fa-ship text-indigo-600"></i>
+                    <span class="font-semibold text-slate-700">Search Unit:</span>
+                    <input type="text" id="searchOrgInput" value="Marine Search & Rescue Unit" class="bg-white border border-slate-300 rounded px-2 py-0.5 text-[11px] text-slate-700 w-48">
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="text-[11px] font-semibold text-slate-500">Target Type:</span>
+                <select id="targetTypeSelect" class="bg-white border border-slate-300 rounded px-2 py-0.5 text-[11px] font-medium text-slate-800">
+                    <option value="all">All Marine & Search Targets</option>
+                    <option value="marine_organisms">Marine Organisms (Fish, Turtle, etc.)</option>
+                    <option value="diver_gear">Submerged Divers & Gear</option>
+                    <option value="salvage_debris">Wreckage & Submerged Objects</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-6 grow w-full">
+
+        <!-- Top Interactive Controls & Environmental Telemetry -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Operational Controls Card -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h2 class="text-sm font-bold text-slate-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-sky-600"></i>
+                        <span>Sensor & Operational Controls</span>
+                    </h2>
+                    <span class="text-[11px] font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">500m Rated</span>
+                </div>
+
+                <!-- Scenario Selection -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700">Select Deep-Sea Test Scenario:</label>
+                    <select id="scenarioSelect" onchange="onScenarioChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        {% for sc in scenarios %}
+                        <option value="{{ sc.id }}" data-depth="{{ sc.camera_depth_m }}">{{ sc.id }} (Depth: {{ sc.camera_depth_m }}m)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Depth Slider (0m to 550m) -->
+                <div class="space-y-2 pt-1">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-700">Operating Survey Depth:</span>
+                        <span id="depthValText" class="text-sky-600 font-extrabold text-sm">150.0 m</span>
+                    </div>
+                    <input type="range" id="depthSlider" min="0" max="550" step="5" value="150" oninput="updateDepth(this.value)" class="w-full accent-sky-600 cursor-pointer h-2 bg-slate-200 rounded-lg">
+                    <div class="flex justify-between text-[10px] text-slate-500 font-medium">
+                        <span>0m (Surface)</span>
+                        <span class="text-blue-600 font-semibold">200m (Photic)</span>
+                        <span class="text-amber-600 font-bold">500m (Rated)</span>
+                        <span class="text-red-500">550m</span>
+                    </div>
+                </div>
+
+                <!-- Prominent Upload Button -->
+                <div class="pt-3 border-t border-slate-100">
+                    <label class="text-xs font-semibold text-slate-700 block mb-2">Upload Underwater Imagery / Sonar Frame:</label>
+                    <input type="file" id="hiddenFileInput" accept="image/*" onchange="onCustomImageUploaded(event)" class="hidden">
+                    <button type="button" onclick="document.getElementById('hiddenFileInput').click()" class="w-full py-2.5 px-4 bg-slate-50 hover:bg-sky-50 border-2 border-dashed border-sky-300 hover:border-sky-500 text-sky-700 text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2 shadow-2xs">
+                        <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+                        <span id="uploadBtnLabel">Click to Upload Image File</span>
+                    </button>
+                    <p class="text-[10px] text-slate-400 mt-1.5 text-center">Supports PNG, JPEG, BMP from ROV/AUV or diver optical payloads</p>
+                </div>
+
+                <!-- Run / Refresh Button -->
+                <button id="btnRunPipeline" onclick="runPipeline()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2 shadow-md shadow-sky-600/20">
+                    <i class="fa-solid fa-play"></i>
+                    <span>Execute Deep Unfolding</span>
+                </button>
+            </div>
+
+            <!-- Extended Telemetry Card (0m - 500m Envelope) -->
+            <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-gauge-high text-sky-600 text-base"></i>
+                        <h2 class="text-sm font-bold text-slate-800">500m Deep-Sea Hydrostatic & Environmental Telemetry</h2>
+                    </div>
+                    <span id="safetyBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        SAFE (Operating Envelope)
+                    </span>
+                </div>
+
+                <!-- 4 Metrics Gauges -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <p class="text-[11px] font-medium text-slate-500">Total Pressure P(d)</p>
+                        <p id="totalPressureText" class="text-xl font-extrabold text-slate-900 mt-0.5">15.93 atm</p>
+                        <p id="kpaText" class="text-[10px] text-sky-600 font-semibold">1614.4 kPa</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <p class="text-[11px] font-medium text-slate-500">Hydrostatic Component</p>
+                        <p id="hydroPressureText" class="text-xl font-extrabold text-slate-900 mt-0.5">+14.93 atm</p>
+                        <p class="text-[10px] text-slate-500">ρ·g·d / 101325</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <p class="text-[11px] font-medium text-slate-500">Optical Zone</p>
+                        <p id="lightZoneText" class="text-sm font-extrabold text-blue-700 mt-1 truncate">Euphotic Zone</p>
+                        <p id="lightingTypeText" class="text-[10px] text-slate-500">Natural Sunlight</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <p class="text-[11px] font-medium text-slate-500">Spectral Red Loss</p>
+                        <p id="redLossText" class="text-xl font-extrabold text-red-600 mt-0.5">100.0%</p>
+                        <p class="text-[10px] text-slate-500">Absorption β_R=0.35</p>
+                    </div>
+                </div>
+
+                <!-- Alert Message -->
+                <div id="pressureWarningAlert" class="hidden p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center space-x-2.5">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base shrink-0"></i>
+                    <span id="warningMsgText" class="font-medium">Warning message goes here</span>
+                </div>
+
+                <!-- Equation Box -->
+                <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-100 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2">
+                    <span><strong class="text-blue-900">Hydrostatic Equation:</strong> \( P(d) = P_0 + \frac{\rho g d}{101325} \)</span>
+                    <span><strong class="text-blue-900">Titanium Housing Rating:</strong> Rated to 56.0 atm (~550m depth)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unfolded Stages Progression (Slide 12 Architecture) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-layer-group text-sky-600"></i>
+                        <span>Unfolded Iterative Stages Progression (Slide 12 Architecture)</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Physics gradient descent steps coupled with learned proximal restoration and detector guidance</p>
+                </div>
+                <div class="flex items-center space-x-2 text-xs">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-slate-600 font-semibold">Marine YOLO Active</span>
+                </div>
+            </div>
+
+            <!-- 5 Image Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                
+                <!-- Card 0: Input -->
+                <div class="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
+                    <div class="px-3 py-2 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700">0. Input Image I(x)</span>
+                        <span class="text-[10px] text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded font-semibold">Dull & Hazy</span>
+                    </div>
+                    <div class="aspect-square bg-slate-900 flex items-center justify-center relative">
+                        <img id="imgInput" src="" alt="Degraded Underwater Input" class="object-contain w-full h-full">
+                    </div>
+                    <div class="p-2.5 text-[11px] text-slate-600 grow">
+                        Heavy color shift, backscatter veil, and low visibility due to light scattering in deep water.
+                    </div>
+                </div>
+
+                <!-- Card 1: Stage 1 -->
+                <div class="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
+                    <div class="px-3 py-2 bg-sky-50 border-b border-sky-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-sky-900">1. Stage 1 (J₁)</span>
+                        <span class="text-[10px] text-sky-700 bg-sky-100 px-2 py-0.5 rounded font-semibold">Red Restored</span>
+                    </div>
+                    <div class="aspect-square bg-slate-900 flex items-center justify-center relative">
+                        <img id="imgStage1" src="" alt="Stage 1 Red Restored" class="object-contain w-full h-full">
+                    </div>
+                    <div class="p-2.5 text-[11px] text-slate-600 grow">
+                        <strong>Color cast fixed:</strong> Lost red wavelengths recovered via water attenuation physics model.
+                    </div>
+                </div>
+
+                <!-- Card 2: Stage 2 -->
+                <div class="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
+                    <div class="px-3 py-2 bg-sky-50 border-b border-sky-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-sky-900">2. Stage 2 (J₂)</span>
+                        <span class="text-[10px] text-sky-700 bg-sky-100 px-2 py-0.5 rounded font-semibold">Dehazed</span>
+                    </div>
+                    <div class="aspect-square bg-slate-900 flex items-center justify-center relative">
+                        <img id="imgStage2" src="" alt="Stage 2 Dehazed" class="object-contain w-full h-full">
+                    </div>
+                    <div class="p-2.5 text-[11px] text-slate-600 grow">
+                        <strong>Haze removed:</strong> Inverted backscatter veil; dynamic contrast expanded via local CLAHE.
+                    </div>
+                </div>
+
+                <!-- Card 3: Stage 3 -->
+                <div class="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
+                    <div class="px-3 py-2 bg-sky-50 border-b border-sky-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-sky-900">3. Stage 3 (J₃)</span>
+                        <span class="text-[10px] text-sky-700 bg-sky-100 px-2 py-0.5 rounded font-semibold">Sharpened</span>
+                    </div>
+                    <div class="aspect-square bg-slate-900 flex items-center justify-center relative">
+                        <img id="imgStage3" src="" alt="Stage 3 Sharpened" class="object-contain w-full h-full">
+                    </div>
+                    <div class="p-2.5 text-[11px] text-slate-600 grow">
+                        <strong>Edges sharpened:</strong> Driven by detector feedback \(F_{\text{det}}\) demanding salient fish contours.
+                    </div>
+                </div>
+
+                <!-- Card 4: Detection Overlay -->
+                <div class="bg-slate-50 rounded-xl border-2 border-emerald-400 overflow-hidden flex flex-col shadow-md">
+                    <div class="px-3 py-2 bg-emerald-50 border-b border-emerald-200 flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-800">4. Marine YOLO Detections</span>
+                        <span class="text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">Output</span>
+                    </div>
+                    <div class="aspect-square bg-slate-900 flex items-center justify-center relative">
+                        <img id="imgDetection" src="" alt="Marine Object Detections" class="object-contain w-full h-full">
+                    </div>
+                    <div class="p-2.5 text-[11px] text-slate-700 grow">
+                        <strong>Organisms localized:</strong> Bounding boxes, classes, and confidence scores (e.g. <em>Fish 0.98</em>).
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Formulations, Joint Loss & Metrics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Mathematical Formulations -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-square-root-variable text-sky-600"></i>
+                    <span>Applied Physics Formulations (Slides 10 & 13)</span>
+                </h3>
+                
+                <div class="space-y-2.5 text-xs text-slate-700">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <p class="font-bold text-sky-700">1. Image Formation Model (Slide 13):</p>
+                        <p class="font-mono text-[13px] text-slate-900 mt-1 font-semibold">I(x) = J(x)·t(x) + B·(1 - t(x))</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Direct scene attenuation plus ambient water backscatter veil.</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <p class="font-bold text-sky-700">2. Optimization Problem (Slide 13):</p>
+                        <p class="font-mono text-[12px] text-slate-900 mt-1 font-semibold">J* = argmin ½||I - (J·t + B(1-t))||² + λR(J) + μL_det(J)</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Balances physics data fidelity, regularizer prior, and detector feedback.</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <p class="font-bold text-sky-700">3. One Unrolled Stage k (Slide 13):</p>
+                        <p class="font-mono text-[13px] text-slate-900 mt-1 font-semibold">Z_k = J_{k-1} - ρ_k·∇f(J_{k-1})</p>
+                        <p class="font-mono text-[13px] text-slate-900 font-semibold">J_k = ProxNet_k(Z_k, F_det)</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Learned proximal operator substitutes handcrafted regularizer with detector guidance.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Joint Loss & Metrics Table -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-chart-line text-sky-600"></i>
+                    <span>Joint Loss & Quantitative Metrics (Slide 10)</span>
+                </h3>
+
+                <!-- Joint Loss Formula Box -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800">Joint Loss L = L_rec + α·L_perc + β·L_det + γ·L_stage</span>
+                        <span id="totalLossText" class="text-sm font-extrabold text-sky-600">L = 0.1532</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-center text-[11px]">
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs">
+                            <span class="text-slate-500 block text-[10px]">L_rec</span>
+                            <span id="lRecText" class="font-bold text-slate-800">0.1200</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs">
+                            <span class="text-slate-500 block text-[10px]">α·L_perc</span>
+                            <span id="lPercText" class="font-bold text-slate-800">0.0098</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs">
+                            <span class="text-slate-500 block text-[10px]">β·L_det</span>
+                            <span id="lDetText" class="font-bold text-slate-800">0.0001</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs">
+                            <span class="text-slate-500 block text-[10px]">γ·L_stage</span>
+                            <span id="lStageText" class="font-bold text-slate-800">0.0232</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-100 text-slate-700 border-b border-slate-200 font-bold">
+                            <tr>
+                                <th class="p-2.5">Metric</th>
+                                <th class="p-2.5">Raw Degraded</th>
+                                <th class="p-2.5">Enhanced (Ours)</th>
+                                <th class="p-2.5">Delta Gain</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="p-2.5 font-medium">UCIQE (Color Quality)</td>
+                                <td id="metricUciqeRaw" class="p-2.5">0.2782</td>
+                                <td id="metricUciqeEnh" class="p-2.5 text-emerald-600 font-bold">0.3334</td>
+                                <td id="metricUciqeGain" class="p-2.5 text-emerald-600 font-bold">+0.0552</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium">PSNR (dB)</td>
+                                <td id="metricPsnrRaw" class="p-2.5">18.47 dB</td>
+                                <td id="metricPsnrEnh" class="p-2.5 text-emerald-600 font-bold">16.44 dB</td>
+                                <td class="p-2.5 text-slate-500">Physics Guided</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium">SSIM</td>
+                                <td id="metricSsimRaw" class="p-2.5">0.8767</td>
+                                <td id="metricSsimEnh" class="p-2.5 text-emerald-600 font-bold">0.6275</td>
+                                <td class="p-2.5 text-slate-500">Feature Aware</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-medium">Detected Marine Objects</td>
+                                <td id="metricDetRaw" class="p-2.5">2 Objects</td>
+                                <td id="metricDetEnh" class="p-2.5 text-emerald-600 font-bold">2 Objects</td>
+                                <td class="p-2.5 text-emerald-600 font-bold">High Conf</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+            <p>DeepSea Vision AI • Detection-Aware Deep Unfolding System for Deep-Sea Marine Inspection & Search Party Operations</p>
+            <p class="flex items-center gap-1.5 font-medium">
+                <i class="fa-solid fa-shield-halved text-sky-600"></i>
+                <span>Database Storage & PWA Ready</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- DOWNLOAD APP MODAL -->
+    <div id="downloadModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Download & Deploy Application</h3>
+                        <p class="text-xs text-slate-500">For Field Laptops, Search Party Vessels & Marine Control Stations</p>
+                    </div>
+                </div>
+                <button onclick="closeDownloadModal()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-5 text-xs text-slate-700">
+                <!-- Option 1: PWA Native Install -->
+                <div class="p-4 bg-sky-50/70 border border-sky-200 rounded-xl space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-sky-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-laptop text-sky-600"></i>
+                            <span>1. Install as Desktop App (PWA)</span>
+                        </span>
+                        <span class="px-2 py-0.5 bg-sky-200/60 text-sky-800 rounded font-bold text-[10px]">Instant</span>
+                    </div>
+                    <p class="text-slate-600">Install directly into Windows, MacOS, Linux, or Android as a standalone native app icon with offline caching.</p>
+                    <button id="btnPWAInstall" onclick="triggerPWAInstall()" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg transition flex items-center space-x-1.5 shadow-sm">
+                        <i class="fa-solid fa-circle-down"></i>
+                        <span>Install Desktop App Now</span>
+                    </button>
+                </div>
+
+                <!-- Option 2: Standalone Zip Package -->
+                <div class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-emerald-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-file-zipper text-emerald-600"></i>
+                            <span>2. Standalone Search Party Bundle (.zip)</span>
+                        </span>
+                        <span class="px-2 py-0.5 bg-emerald-200/60 text-emerald-800 rounded font-bold text-[10px]">Portable (5 MB)</span>
+                    </div>
+                    <p class="text-slate-600">Download the self-contained package including 1-click launchers (<code>run_app.bat</code> for Windows and <code>run_app.sh</code> for Linux), dual databases, sample data, and CLI tools for offline use on marine vessels.</p>
+                    <a href="/api/download/app-bundle" download="DeepSea_Vision_AI_SearchParty_Edition.zip" class="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download Standalone Zip Bundle</span>
+                    </a>
+                </div>
+
+                <!-- Option 3: Search Party ROV Integration API -->
+                <div class="p-4 bg-slate-100 border border-slate-200 rounded-xl space-y-2">
+                    <span class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-code text-slate-600"></i>
+                        <span>3. AUV / ROV Automation API</span>
+                    </span>
+                    <p class="text-slate-600">Transmit captured frames automatically via HTTP POST:</p>
+                    <pre class="bg-slate-900 text-sky-300 p-2.5 rounded-lg text-[11px] overflow-x-auto">curl -X POST http://127.0.0.1:5000/api/process \
+  -H "Content-Type: application/json" \
+  -d '{"depth_m": 250.0, "mission_code": "SAR-NORTH-GRID", "custom_image_b64": "<base64_data>"}'</pre>
+                </div>
+            </div>
+
+            <div class="px-6 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-end">
+                <button onclick="closeDownloadModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-lg text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI REPORT MODAL -->
+    <div id="reportModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">AI Deep-Sea Survey & Inspection Report</h3>
+                        <p id="reportSubHeader" class="text-xs text-slate-500 font-medium">Automated technical assessment based on physical parameters</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="downloadReportMarkdown()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition border border-slate-300 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download (.md)</span>
+                    </button>
+                    <button onclick="closeReportModal()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content (Rendered Markdown) -->
+            <div id="reportContainer" class="p-6 overflow-y-auto grow report-content">
+                <div class="flex items-center justify-center py-12 text-slate-400">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mr-3"></i>
+                    <span>Generating comprehensive AI survey report...</span>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
+                <span>Generated by DeepSea Vision AI Engine</span>
+                <button onclick="closeReportModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-lg text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATABASE EVIDENCE LOCKER MODAL -->
+    <div id="historyModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-5xl max-h-[85vh] rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Search Party Evidence Locker & Database Logs</h3>
+                        <p class="text-xs text-slate-500">Dual Database: received_data.db (Raw Feeds & GPS) & enhanced_results.db (Enhanced Images & Targets)</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a href="/api/export-csv" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded-lg text-xs border border-emerald-300 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-file-csv"></i>
+                        <span>Export Mission CSV</span>
+                    </a>
+                    <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="p-6 overflow-y-auto grow">
+                <div id="historyTableContainer" class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-2.5">Record ID</th>
+                                <th class="p-2.5">Mission Code</th>
+                                <th class="p-2.5">GPS Coords</th>
+                                <th class="p-2.5">Depth</th>
+                                <th class="p-2.5">Pressure</th>
+                                <th class="p-2.5">Targets</th>
+                                <th class="p-2.5">UCIQE Gain</th>
+                                <th class="p-2.5 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody" class="divide-y divide-slate-100 text-slate-700">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="px-6 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
+                <span>Stored in <code class="text-sky-700">storage/received_data.db</code> & <code class="text-sky-700">storage/enhanced_results.db</code></span>
+                <button onclick="closeHistoryModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-lg text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Script -->
+    <script>
+        let currentCustomImage = null;
+        let currentFilename = "sensor_capture.png";
+        let latestRecordId = null;
+        let latestReportMarkdown = "";
+        let deferredPWAInstallPrompt = null;
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(() => {
+                console.log("DeepSea Vision AI Service Worker registered successfully.");
+            }).catch(err => {
+                console.warn("Service Worker registration notice:", err);
+            });
+        }
+
+        // Catch PWA Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPWAInstallPrompt = e;
+            const btn = document.getElementById('btnPWAInstall');
+            if (btn) btn.classList.remove('opacity-50');
+        });
+
+        function triggerPWAInstall() {
+            if (deferredPWAInstallPrompt) {
+                deferredPWAInstallPrompt.prompt();
+                deferredPWAInstallPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User installed the PWA app');
+                    }
+                    deferredPWAInstallPrompt = null;
+                });
+            } else {
+                alert("To install as desktop app: Click the Install Icon (computer with arrow) in your browser's address bar or use Chrome/Edge Menu > Install App.");
+            }
+        }
+
+        function openDownloadModal() {
+            document.getElementById('downloadModal').classList.remove('hidden');
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('downloadModal').classList.add('hidden');
+        }
+
+        function updateDepth(val) {
+            const depth = parseFloat(val);
+            document.getElementById('depthValText').innerText = depth.toFixed(1) + ' m';
+            
+            // Pressure formula: P = 1.0 + (1025 * 9.80665 * d) / 101325
+            const hydroAtm = (1025.0 * 9.80665 * depth) / 101325.0;
+            const totalAtm = 1.0 + hydroAtm;
+            const totalKpa = totalAtm * 101.325;
+
+            document.getElementById('totalPressureText').innerText = totalAtm.toFixed(2) + ' atm';
+            document.getElementById('kpaText').innerText = totalKpa.toFixed(1) + ' kPa';
+            document.getElementById('hydroPressureText').innerText = '+' + hydroAtm.toFixed(2) + ' atm';
+
+            // Safety Status Badge & Warning Box
+            const badge = document.getElementById('safetyBadge');
+            const alertBox = document.getElementById('pressureWarningAlert');
+            const warnText = document.getElementById('warningMsgText');
+
+            if (depth <= 500.0 && totalAtm < 50.4) {
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200";
+                badge.innerText = "SAFE (Operating Envelope)";
+                alertBox.classList.add('hidden');
+            } else if (depth <= 500.0 && totalAtm >= 50.4) {
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200";
+                badge.innerText = "WARNING_HIGH_PRESSURE";
+                alertBox.classList.remove('hidden');
+                warnText.innerText = "Approaching maximum camera housing rating: " + totalAtm.toFixed(2) + " atm (Rated Max: 56.0 atm at 500m depth)";
+            } else {
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200";
+                badge.innerText = "OUT_OF_RANGE";
+                alertBox.classList.remove('hidden');
+                warnText.innerText = "EXCEEDED RATING: Depth " + depth.toFixed(1) + "m exceeds maximum operational rating (500m) and structural pressure limit (56 atm)!";
+            }
+
+            // Light Zone classification up to 500m
+            if (depth <= 200.0) {
+                document.getElementById('lightZoneText').innerText = "Euphotic Zone";
+                document.getElementById('lightingTypeText').innerText = "Natural Sunlight";
+            } else if (depth <= 500.0) {
+                document.getElementById('lightZoneText').innerText = "Mesopelagic Zone";
+                document.getElementById('lightingTypeText').innerText = "Twilight + ROV Lights";
+            } else {
+                document.getElementById('lightZoneText').innerText = "Bathypelagic Zone";
+                document.getElementById('lightingTypeText').innerText = "Aphotic (Darkness)";
+            }
+
+            // Red Loss calculation
+            const redLoss = Math.min(100.0, (1.0 - Math.exp(-0.35 * depth)) * 100.0);
+            document.getElementById('redLossText').innerText = redLoss.toFixed(1) + '%';
+        }
+
+        function onScenarioChange() {
+            const select = document.getElementById('scenarioSelect');
+            const opt = select.options[select.selectedIndex];
+            const depth = parseFloat(opt.getAttribute('data-depth') || 150.0);
+            document.getElementById('depthSlider').value = depth;
+            updateDepth(depth);
+            currentCustomImage = null;
+            document.getElementById('uploadBtnLabel').innerText = "Click to Upload Image File";
+            currentFilename = opt.value + ".png";
+            runPipeline();
+        }
+
+        function onCustomImageUploaded(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            currentFilename = file.name;
+            document.getElementById('uploadBtnLabel').innerText = "Uploaded: " + file.name;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentCustomImage = e.target.result;
+                runPipeline();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function runPipeline() {
+            const btn = document.getElementById('btnRunPipeline');
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+
+            try {
+                const scenario_id = document.getElementById('scenarioSelect').value;
+                const depth_m = parseFloat(document.getElementById('depthSlider').value);
+                const mission_code = document.getElementById('missionCodeInput').value;
+                const gps_coords = document.getElementById('gpsInput').value;
+                const search_org = document.getElementById('searchOrgInput').value;
+                const target_type = document.getElementById('targetTypeSelect').value;
+
+                const response = await fetch('/api/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        scenario_id: scenario_id,
+                        depth_m: depth_m,
+                        custom_image_b64: currentCustomImage,
+                        filename: currentFilename,
+                        mission_code: mission_code,
+                        gps_coords: gps_coords,
+                        search_org: search_org,
+                        target_type: target_type
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Pipeline execution failed: " + response.status);
+                }
+
+                const data = await response.json();
+                latestRecordId = data.record_id;
+
+                // Update images
+                document.getElementById('imgInput').src = data.images.input_degraded;
+                document.getElementById('imgStage1').src = data.images.stage_1_color_fixed;
+                document.getElementById('imgStage2').src = data.images.stage_2_contrast_haze;
+                document.getElementById('imgStage3').src = data.images.stage_3_edge_sharpened;
+                document.getElementById('imgDetection').src = data.images.detection_overlay;
+
+                // Update metrics
+                if (data.metrics) {
+                    document.getElementById('metricUciqeRaw').innerText = data.metrics.degraded_uciqe.toFixed(4);
+                    document.getElementById('metricUciqeEnh').innerText = data.metrics.enhanced_uciqe.toFixed(4);
+                    const gain = data.metrics.enhanced_uciqe - data.metrics.degraded_uciqe;
+                    document.getElementById('metricUciqeGain').innerText = (gain >= 0 ? '+' : '') + gain.toFixed(4);
+
+                    if (data.metrics.psnr_degraded_to_gt !== undefined) {
+                        document.getElementById('metricPsnrRaw').innerText = data.metrics.psnr_degraded_to_gt.toFixed(2) + ' dB';
+                        document.getElementById('metricPsnrEnh').innerText = data.metrics.psnr_enhanced_to_gt.toFixed(2) + ' dB';
+                    }
+                    if (data.metrics.ssim_degraded_to_gt !== undefined) {
+                        document.getElementById('metricSsimRaw').innerText = data.metrics.ssim_degraded_to_gt.toFixed(4);
+                        document.getElementById('metricSsimEnh').innerText = data.metrics.ssim_enhanced_to_gt.toFixed(4);
+                    }
+                    document.getElementById('metricDetEnh').innerText = data.detections.length + " Target Contacts";
+                    document.getElementById('metricDetRaw').innerText = data.raw_detections.length + " Target Contacts";
+                }
+
+                // Update joint loss
+                if (data.joint_loss) {
+                    document.getElementById('totalLossText').innerText = "L = " + data.joint_loss.total_loss_L.toFixed(4);
+                    document.getElementById('lRecText').innerText = data.joint_loss.reconstruction_loss_L_rec.toFixed(4);
+                    document.getElementById('lPercText').innerText = (data.joint_loss.alpha * data.joint_loss.perceptual_loss_L_perc).toFixed(4);
+                    document.getElementById('lDetText').innerText = (data.joint_loss.beta * data.joint_loss.detection_loss_L_det).toFixed(4);
+                    document.getElementById('lStageText').innerText = (data.joint_loss.gamma * data.joint_loss.multi_stage_loss_L_stage).toFixed(4);
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Error during pipeline execution: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            }
+        }
+
+        async function generateCurrentAIReport() {
+            if (!latestRecordId) {
+                alert("Please execute the pipeline first to generate a mission record.");
+                return;
+            }
+            openReportModal();
+            const container = document.getElementById('reportContainer');
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-16 text-slate-400 space-y-3">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl text-sky-600"></i>
+                    <span class="text-sm font-semibold text-slate-600">Synthesizing Search Party Mission AI Report...</span>
+                </div>
+            `;
+
+            try {
+                const res = await fetch('/api/report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ record_id: latestRecordId })
+                });
+
+                if (!res.ok) throw new Error("Failed to generate report");
+                const data = await res.json();
+                latestReportMarkdown = data.report_markdown;
+                document.getElementById('reportSubHeader').innerText = `Mission: ${data.meta.mission_code} • Record: ${data.record_id} • Depth: ${data.meta.depth_m}m • Pressure: ${data.meta.pressure_atm.toFixed(2)} atm`;
+                
+                // Render Markdown via marked.js
+                container.innerHTML = marked.parse(latestReportMarkdown);
+            } catch (err) {
+                container.innerHTML = `<div class="p-4 bg-red-50 text-red-700 rounded-lg">Error: ${err.message}</div>`;
+            }
+        }
+
+        function openReportModal() {
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
+
+        function downloadReportMarkdown() {
+            if (!latestReportMarkdown) return;
+            const blob = new Blob([latestReportMarkdown], { type: 'text/markdown;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `DeepSea_SAR_Report_${latestRecordId || 'mission'}.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function openHistoryModal() {
+            document.getElementById('historyModal').classList.remove('hidden');
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading evidence logs...</td></tr>`;
+
+            try {
+                const res = await fetch('/api/history');
+                const data = await res.json();
+                const records = data.records || [];
+
+                if (records.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">No records stored in database yet. Process a capture to log evidence.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                records.forEach(item => {
+                    const r = item.record;
+                    const e = item.enhancement || {};
+                    const gain = (e.uciqe_gain !== undefined) ? e.uciqe_gain.toFixed(4) : "N/A";
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 transition";
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-mono text-[11px] font-semibold text-sky-700">${r.record_id}</td>
+                        <td class="p-2.5 font-semibold text-slate-800">${r.mission_code || 'SAR-01'}</td>
+                        <td class="p-2.5 font-mono text-[11px] text-slate-500">${r.gps_coords || '-'}</td>
+                        <td class="p-2.5 font-semibold text-slate-800">${r.depth_m.toFixed(1)}m</td>
+                        <td class="p-2.5 text-slate-600">${r.total_pressure_atm.toFixed(2)} atm</td>
+                        <td class="p-2.5 font-bold text-slate-800">${e.num_detections || 0} ${e.detected_classes ? '(' + e.detected_classes + ')' : ''}</td>
+                        <td class="p-2.5 text-emerald-600 font-bold">${gain}</td>
+                        <td class="p-2.5 text-right">
+                            <button onclick="generateReportForId('${r.record_id}')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded text-[11px] border border-indigo-200 transition">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>AI Report
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-red-600">Error loading logs: ${err.message}</td></tr>`;
+            }
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.add('hidden');
+        }
+
+        async function generateReportForId(recId) {
+            closeHistoryModal();
+            latestRecordId = recId;
+            generateCurrentAIReport();
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateDepth(150.0);
+            runPipeline();
+        });
+    </script>
+</body>
+</html>

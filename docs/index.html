@@ -230,7 +230,7 @@
 
                 <!-- Equation Box -->
                 <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-100 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2">
-                    <span><strong class="text-blue-900">Hydrostatic Equation:</strong> \( P(d) = P_0 + \frac{\rho g d}{101325} \)</span>
+                    <span class="flex items-center gap-1.5"><strong class="text-blue-900">Hydrostatic Equation:</strong> <code class="bg-blue-100/80 text-blue-900 px-2 py-0.5 rounded font-mono font-bold">P(d) = P₀ + (ρ·g·d) / 101325</code></span>
                     <span><strong class="text-blue-900">Titanium Housing Rating:</strong> Rated to 56.0 atm (~550m depth)</span>
                 </div>
             </div>
@@ -894,3 +894,4 @@ ${sc.detections.map((d, i) => `| ${i+1} | **${d.class_name.toUpperCase()}** | \`
     </script>
 </body>
 </html>
+

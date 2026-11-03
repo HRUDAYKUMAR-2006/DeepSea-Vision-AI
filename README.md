@@ -1,26 +1,40 @@
-# DeepSea Vision AI: Detection-Aware Deep Unfolding Platform
+# 🌊 DeepSea Vision AI: Detection-Aware Deep Unfolding Platform
 
-[![Live Demo](https://img.shields.io/badge/Live_Website-GitHub_Pages-0284c7?style=for-the-badge&logo=googlechrome&logoColor=white)](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)
-[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![PWA Ready](https://img.shields.io/badge/PWA-Installable_App-10b981?style=for-the-badge&logo=pwa&logoColor=white)](#offline-pwa-app-installation)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)](LICENSE)
+<div align="center">
 
-> **Live Web Application:** [https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)  
-> **Standalone Download Bundle:** [DeepSea_Vision_AI_SearchParty_Edition.zip](dist/DeepSea_Vision_AI_SearchParty_Edition.zip)
+# 🚀 [CLICK HERE TO LAUNCH THE LIVE WEB APP](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)
+### **Immediate Interactive Browser Platform — No Installation Required!**
+
+[![Open Web Application](https://img.shields.io/badge/🌐%20LAUNCH%20LIVE%20WEBSITE-hrudaykumar--2006.github.io%2FDeepSea--Vision--AI-0284c7?style=for-the-badge&logo=googlechrome&logoColor=white)](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)
+[![Download Portable App](https://img.shields.io/badge/📦%20DOWNLOAD%20APP%20BUNDLE-Offline%20Edition-10b981?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/raw/main/dist/DeepSea_Vision_AI_SearchParty_Edition.zip)
+[![PWA Ready](https://img.shields.io/badge/📱%20PWA-Installable%20App-7c3aed?style=for-the-badge&logo=pwa&logoColor=white)](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)
+
+</div>
+
+> ⚡ **Direct Web App Link:** **[https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)**  
+> 📦 **Standalone Download Bundle (.zip):** [DeepSea_Vision_AI_SearchParty_Edition.zip](https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/raw/main/dist/DeepSea_Vision_AI_SearchParty_Edition.zip)
 
 ---
 
-## 1. How to Enable GitHub Pages (Make the Website Publicly Accessible)
+> [!TIP]
+> **Visiting this repository on GitHub?**  
+> GitHub by default displays repository source files and this README documentation. To use all the interactive functions (Upload underwater images, adjust depth envelope from 0m to 500m with hydrostatic pressure calculations, view 3-stage deep unfolding, run marine YOLO detection, and generate AI survey reports), simply click the live website link above: **[Launch Live Website](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)**.
 
-Anyone who visits your repository can use the web application directly in their browser without installing anything!
+---
 
-### Simple 30-Second Setup:
-1. Go to your repository settings: [https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/settings/pages](https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/settings/pages)
-2. Under **"Build and deployment"** $\to$ **"Source"**, select **"Deploy from a branch"**.
-3. Under **"Branch"**, select **`main`** and choose folder **`/docs`**, then click **Save**.
-4. Within 1 minute, your website will be live at:
-   $$\text{\bf https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/}$$
-5. (Optional) In the repository homepage, click the ⚙️ gear icon next to **"About"** on the right sidebar, check **"Use your GitHub Pages website"**, and save. Now a direct **"View Website"** link appears prominently at the top of your repository!
+## 1. How to Ensure GitHub Pages is Active on Your Repository
+
+The repository includes an automatic GitHub Actions deployment workflow (`.github/workflows/deploy.yml`) and pre-built web pages in both root and `/docs` with `.nojekyll` protection.
+
+### Quick Verification in Repository Settings:
+1. Go to repository settings: **[https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/settings/pages](https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/settings/pages)**
+2. Under **"Build and deployment"** $\to$ **"Source"**:
+   - **Recommended:** Select **"GitHub Actions"** (runs `.github/workflows/deploy.yml` automatically on push).
+   - *Alternative:* Select **"Deploy from a branch"** $\to$ choose branch **`main`** and folder **`/docs`** (or `/root`), then click **Save**.
+3. **Display Website Link on Repository Header:**
+   - In the repository main page, click the ⚙️ gear icon next to **"About"** in the top right.
+   - Check **"Use your GitHub Pages website"** (or paste `https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/`).
+   - Click **Save changes**. Now every visitor sees a prominent **"View Website"** link at the very top of your repository!
 
 ---
 

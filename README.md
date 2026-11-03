@@ -1,8 +1,30 @@
-# DeepSea Vision AI: Detection-Aware Deep Unfolding Network for Joint Underwater Image Enhancement and Marine Object Detection
+# DeepSea Vision AI: Detection-Aware Deep Unfolding Platform
+
+[![Live Demo](https://img.shields.io/badge/Live_Website-GitHub_Pages-0284c7?style=for-the-badge&logo=googlechrome&logoColor=white)](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PWA Ready](https://img.shields.io/badge/PWA-Installable_App-10b981?style=for-the-badge&logo=pwa&logoColor=white)](#offline-pwa-app-installation)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)](LICENSE)
+
+> **Live Web Application:** [https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/](https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/)  
+> **Standalone Download Bundle:** [DeepSea_Vision_AI_SearchParty_Edition.zip](dist/DeepSea_Vision_AI_SearchParty_Edition.zip)
 
 ---
 
-## 1. System Overview
+## 1. How to Enable GitHub Pages (Make the Website Publicly Accessible)
+
+Anyone who visits your repository can use the web application directly in their browser without installing anything!
+
+### Simple 30-Second Setup:
+1. Go to your repository settings: [https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/settings/pages](https://github.com/HRUDAYKUMAR-2006/DeepSea-Vision-AI/settings/pages)
+2. Under **"Build and deployment"** $\to$ **"Source"**, select **"Deploy from a branch"**.
+3. Under **"Branch"**, select **`main`** and choose folder **`/docs`**, then click **Save**.
+4. Within 1 minute, your website will be live at:
+   $$\text{\bf https://hrudaykumar-2006.github.io/DeepSea-Vision-AI/}$$
+5. (Optional) In the repository homepage, click the ⚙️ gear icon next to **"About"** on the right sidebar, check **"Use your GitHub Pages website"**, and save. Now a direct **"View Website"** link appears prominently at the top of your repository!
+
+---
+
+## 2. System Overview
 
 Underwater optical imagery suffers from severe color distortion, backscatter haze, low contrast, and blur caused by wavelength-dependent light absorption and scattering in water. Traditional vision pipelines apply image enhancement first and object detection second as disjoint steps; consequently, enhancement is tuned solely for human visual appeal rather than machine detection utility, often wiping out subtle high-frequency morphological features required for marine organism localization.
 
@@ -10,7 +32,7 @@ This platform implements the **Detection-Aware Deep Unfolding Network**. It unro
 
 ---
 
-## 2. Mathematical Formulations (Applied Directly from the PPT)
+## 3. Mathematical Formulations (Applied Directly from PPT)
 
 ### A. Underwater Optical Degradation Model *(Slide 13, Equation 1)*
 The observed degraded underwater image $I(x)$ at spatial coordinate $x$ is given by:
@@ -56,7 +78,7 @@ where:
 
 ---
 
-## 3. Extended 500-Meter Depth & Hydrostatic Pressure Constraints
+## 4. Extended 500-Meter Depth & Hydrostatic Pressure Constraints
 
 The camera profile is rated for deep-sea operations from the surface down to the mesopelagic zone ($500\,\text{m}$):
 
@@ -74,14 +96,9 @@ where:
   - $490\text{ m} < d \le 500\text{ m}$ ($50.4\text{ atm} \le P \le 56.0\text{ atm}$): `WARNING_HIGH_PRESSURE`
   - $d > 500\text{ m}$ ($P > 56.0\text{ atm}$): `OUT_OF_RANGE` (Safety shutdown trigger)
 
-### Marine Optical Light Zones
-- **0m - 200m (Euphotic Zone):** Sunlight penetration, downwelling solar illumination.
-- **200m - 500m (Mesopelagic / Twilight Zone):** Low ambient sunlight, requiring high ISO sensor tuning and ROV auxiliary strobe lighting.
-- **> 500m (Bathypelagic / Aphotic Zone):** Complete darkness, reliant on artificial illumination.
-
 ---
 
-## 4. Visual Progression Across Unfolded Stages *(Slide 12)*
+## 5. Visual Progression Across Unfolded Stages *(Slide 12)*
 
 | Stage | Operation & Principle | Visual Outcome |
 |---|---|---|
@@ -93,34 +110,19 @@ where:
 
 ---
 
-## 5. Dual Database Architecture & AI Report Generation
-
-1. **Received Data Database (`storage/received_data.db`):**
-   - Table `received_images`: Stores all incoming image metadata, timestamp, operating depth ($0-500\text{m}$), pressure in atm/kPa, safety status, light zone, ambient lux, and raw image file path.
-
-2. **Enhanced Results Database (`storage/enhanced_results.db`):**
-   - Table `enhanced_records`: Stores enhanced image paths, intermediate stages ($J_1, J_2, J_3$), transmission maps, detection overlays, UCIQE gain, UIQM, joint loss terms ($L, L_{\text{rec}}, L_{\text{perc}}, L_{\text{det}}, L_{\text{stage}}$), and JSON detected objects list.
-
-3. **AI Survey Report Generator (`core/ai_report_generator.py`):**
-   - Generates comprehensive technical and ecological survey reports on demand.
-   - Available directly in the UI with a single click, with options to download Markdown (`.md`) or print.
-
----
-
-## 6. How to Run
+## 6. How to Run Locally
 
 ### A. Run Automated Unit & Integration Tests
 ```bash
 python -m pytest tests/test_pipeline.py -v
 ```
 
-### B. Launch the Light-Themed Web Dashboard
+### B. Launch the Local Web Dashboard
 ```bash
 python demo/app.py
 ```
-Open **`http://127.0.0.1:5000`** to access:
-- Bright, modern light theme.
-- Interactive camera depth slider up to **$500\text{m}$**.
-- Upload button to upload custom underwater photos.
-- Dual database log viewer.
-- **Generate AI Report** button for instant automated analysis reports.
+Open **`http://127.0.0.1:5000`** in your browser.
+
+### C. 1-Click Desktop App (Windows & Linux)
+- **Windows:** Double-click `run_app.bat`
+- **Linux/Mac:** Run `./run_app.sh`

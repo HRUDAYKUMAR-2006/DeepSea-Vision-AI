@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: deepsea-vision-ai
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python demo/app.py
+    envVars:
+      - key: PORT
+        value: 10000

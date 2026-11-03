@@ -356,6 +356,7 @@ def export_csv_api():
 
 
 if __name__ == "__main__":
-    print("Starting DeepSea Vision AI Platform & Search Party Server...")
-    print("Open http://127.0.0.1:5000 in your browser.")
-    app.run(host="127.0.0.1", port=5000, debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    print(f"Starting DeepSea Vision AI Platform on port {port}...")
+    print(f"Open http://127.0.0.1:{port} in your browser.")
+    app.run(host="0.0.0.0", port=port, debug=False)

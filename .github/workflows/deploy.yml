@@ -1,17 +1,15 @@
-name: Deploy DeepSea Vision AI to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -25,9 +23,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
 
       - name: Upload Static Web Artifact
         uses: actions/upload-pages-artifact@v3
